@@ -18,12 +18,12 @@ Then it will:
 * Download + install the latest Laravel installation
 * Give you some information how to update the database config + .env file
 * Open the project in the browser
-* remove the installation wizard file
+* Remove the installation wizard file
 
 ## How I am using this
 
-I download this file, and add some personal changes in the script.  
-I will automatically create a 'staging' and 'production' directory to store the .env filers for example.
+I download this file, do some personal changes in the script.  
+I will automatically create a 'staging' and 'production' directory to store the .env files for example.
 
 ### Alias
 I will make an alias (once)
@@ -32,7 +32,7 @@ alias newlaravel="cp C:/new-docker-laravel-project.sh . && sh new-docker-laravel
 ```
 
 ### Create a new project
-Create a new directory somewhere and get into this new directory and call:  
+Create a new directory somewhere, get into this new directory and call:  
 ```bash
 newlaravel
 ```
