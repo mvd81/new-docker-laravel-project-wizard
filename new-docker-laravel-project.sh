@@ -38,13 +38,21 @@ if [[ $mysql_port != "" && $mysql_port != "" ]]; then
 sed -i "s/3308/$mysql_port/" docker-compose.yml
 fi
 
+# Redis port
+read -p "A free Redis port number: " redis_port
+if [[ $redis_port != "" && $redis_port != "" ]]; then
+sed -i "s/6382/$redis_port/" docker-compose.yml
+fi
+
+
 # Startup containers
 docker-compose up -d --build > /dev/null
 
 echo ""
 echo "Download and installing the latest Laravel version....may take a while"
 echo ""
-docker-compose run composer create-project --prefer-dist laravel/laravel . > /dev/null
+docker-compose run composer create-project --prefer-dist laravel/laravel .
+docker-compose run composer composer require predis/predis
 
 # Open the browser
 start firefox -new-tab "http://localhost:$nginx_port"
@@ -57,6 +65,7 @@ echo "Project name: $project_name"
 echo "Nginx port:   $nginx_port"
 echo "PHP port:     $php_port"
 echo "MYSQL port:   $mysql_port"
+echo "Redis port:   $redis_port"
 echo "--------------------"
 echo ""
 
@@ -82,6 +91,12 @@ echo "test_DB_PORT=3306"
 echo "TEST_DB_DATABASE=test_$project_name"
 echo "TEST_DB_USERNAME=root"
 echo "TEST_DB_PASSWORD=secret456"
+echo ""
+echo "CACHE_DRIVER=redis"
+echo "REDIS_CLIENT=predis"
+echo "REDIS_HOST=redis"
+echo "REDIS_PASSWORD=null"
+echo "REDIS_PORT=6379"
 
 echo ""
 echo "--------------------"
