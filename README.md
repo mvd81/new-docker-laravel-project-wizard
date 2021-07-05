@@ -8,6 +8,7 @@ When you call this (shell) script it will ask for:
 * A free Docker Nginx port number
 * A free Docker PHP port number
 * A free Docker Mysql port number
+* A free Docker Redis port number
 
 Then it will:
 * Download my docker-compose file from repo, https://github.com/mvd81/docker-laravel
