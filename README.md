@@ -15,9 +15,9 @@ Then it will:
 * Change the chosen values (network name + ports + (test) database name) in the docker-compose.yml + 
   sql_scripts/create_test_db.sql file
 * Start the Docker containers
-* Download + install the latest Laravel installation
-* Give you some information how to update the database config + .env file
-* Open the project in the browser
+* Download + install the latest Laravel installation (optional)
+* * Give you some information how to update the database config + .env file
+* * Open the project in the browser
 * Remove the installation wizard file
 
 ## How I am using this
