@@ -44,84 +44,91 @@ if [[ $redis_port != "" && $redis_port != "" ]]; then
 sed -i "s/6382/$redis_port/" docker-compose.yml
 fi
 
+cd ../
+mv htdocs htdocs_$project_name
+
+cd htdocs_$project_name
 
 # Startup containers
 docker-compose up -d --build > /dev/null
 
-echo ""
-echo "Download and installing the latest Laravel version....may take a while"
-echo ""
-docker-compose run composer create-project --prefer-dist laravel/laravel .
-docker-compose run composer composer require predis/predis
+read -p "Install the latest Laravel version (yes/no): " install_laravel
+if [[ $install_laravel != "" && $install_laravel == "yes" ]]; then
 
-# Open the browser
-start firefox -new-tab "http://localhost:$nginx_port"
+  echo ""
+  echo "Download and installing the latest Laravel version....may take a while"
+  echo ""
+  docker-compose run composer create-project --prefer-dist laravel/laravel .
+  docker-compose run composer composer require predis/predis
 
-### Your given input/options ###
-echo "--------------------"
-echo "Your input"
-echo "--------------------"
-echo "Project name: $project_name"
-echo "Nginx port:   $nginx_port"
-echo "PHP port:     $php_port"
-echo "MYSQL port:   $mysql_port"
-echo "Redis port:   $redis_port"
-echo "--------------------"
-echo ""
+  # Open the browser
+  start firefox -new-tab "http://localhost:$nginx_port"
 
-### Echo config settings ###
+  ### Your given input/options ###
+  echo "--------------------"
+  echo "Your input"
+  echo "--------------------"
+  echo "Project name: $project_name"
+  echo "Nginx port:   $nginx_port"
+  echo "PHP port:     $php_port"
+  echo "MYSQL port:   $mysql_port"
+  echo "Redis port:   $redis_port"
+  echo "--------------------"
+  echo ""
 
-echo "--------------------"
-echo "Change the settings in your .env file:"
-echo "--------------------"
-echo ""
-echo "APP_URL=http://localhost:$nginx_port"
-echo ""
+  ### Echo config settings ###
 
-echo "DB_CONNECTION=mysql"
-echo "DB_HOST=mysql"
-echo "DB_PORT=3306"
-echo "DB_DATABASE=$project_name"
-echo "DB_USERNAME=root"
-echo "DB_PASSWORD=secret456"
-echo ""
-echo "TEST_DB_CONNECTION=mysql"
-echo "TEST_DB_HOST=mysql"
-echo "test_DB_PORT=3306"
-echo "TEST_DB_DATABASE=test_$project_name"
-echo "TEST_DB_USERNAME=root"
-echo "TEST_DB_PASSWORD=secret456"
-echo ""
-echo "CACHE_DRIVER=redis"
-echo "REDIS_CLIENT=predis"
-echo "REDIS_HOST=redis"
-echo "REDIS_PASSWORD=null"
-echo "REDIS_PORT=6379"
+  echo "--------------------"
+  echo "Change the settings in your .env file:"
+  echo "--------------------"
+  echo ""
+  echo "APP_URL=http://localhost:$nginx_port"
+  echo ""
 
-echo ""
-echo "--------------------"
-echo "In htdocs/src/config/database.php, add an item to the array"
-echo "--------------------"
-echo ""
+  echo "DB_CONNECTION=mysql"
+  echo "DB_HOST=mysql"
+  echo "DB_PORT=3306"
+  echo "DB_DATABASE=$project_name"
+  echo "DB_USERNAME=root"
+  echo "DB_PASSWORD=secret456"
+  echo ""
+  echo "TEST_DB_CONNECTION=mysql"
+  echo "TEST_DB_HOST=mysql"
+  echo "test_DB_PORT=3306"
+  echo "TEST_DB_DATABASE=test_$project_name"
+  echo "TEST_DB_USERNAME=root"
+  echo "TEST_DB_PASSWORD=secret456"
+  echo ""
+  echo "CACHE_DRIVER=redis"
+  echo "REDIS_CLIENT=predis"
+  echo "REDIS_HOST=redis"
+  echo "REDIS_PASSWORD=null"
+  echo "REDIS_PORT=6379"
 
-echo "'test_db' => ["
-echo "            'driver' => 'mysql',"
-echo "            'host' => env('TEST_DB_HOST', '127.0.0.1'),"
-echo "            'port' => env('TEST_DB_PORT', '3306'),"
-echo "            'database' => env('TEST_DB_DATABASE', 'forge'),"
-echo "            'username' => env('TEST_DB_USERNAME', 'forge'),"
-echo "            'password' => env('TEST_DB_PASSWORD', ''),"
-echo "        ],"
+  echo ""
+  echo "--------------------"
+  echo "In htdocs/src/config/database.php, add an item to the array"
+  echo "--------------------"
+  echo ""
 
-echo ""
-echo "--------------------"
-echo "In htdocs/src/phpunit.xml"
-echo "--------------------"
-echo ""
-echo "<env name=\"DB_CONNECTION\" value=\"test_db\"/>"
+  echo "'test_db' => ["
+  echo "            'driver' => 'mysql',"
+  echo "            'host' => env('TEST_DB_HOST', '127.0.0.1'),"
+  echo "            'port' => env('TEST_DB_PORT', '3306'),"
+  echo "            'database' => env('TEST_DB_DATABASE', 'forge'),"
+  echo "            'username' => env('TEST_DB_USERNAME', 'forge'),"
+  echo "            'password' => env('TEST_DB_PASSWORD', ''),"
+  echo "        ],"
 
-cd ..
+  echo ""
+  echo "--------------------"
+  echo "In htdocs/src/phpunit.xml"
+  echo "--------------------"
+  echo ""
+  echo "<env name=\"DB_CONNECTION\" value=\"test_db\"/>"
 
+  cd ..
+
+fi
 #// Remove this installation script sh script.
 rm new-docker-laravel-project.sh
-
